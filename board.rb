@@ -1,7 +1,10 @@
 class Board
 
+  attr_reader :tile_grid
+
   def initialize
     @tile_grid = Array.new(9) { Array.new(9) { Tile.new() } }
+    set_bombs
     set_tile_coords
   end
 
@@ -16,7 +19,8 @@ class Board
 
   def make_move(move)
     move_type, coords = move
-    move_type == "f" ? flag(coords) : reveal_contig(coords)
+    coords.reverse!
+    move_type == "f" ? flag_coords(coords) : reveal_contig(coords)
   end
 
   def set_bombs(no_of_bombs = 9)

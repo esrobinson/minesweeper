@@ -23,6 +23,7 @@ class Tile
 
   def flag
     @flagged = !@flagged unless revealed?
+    true
   end
 
   def reveal
@@ -33,7 +34,7 @@ class Tile
 
   def to_s
     if flagged?
-      "f"
+      "F"
     elsif revealed?
       "#{@neighbor_bombs}"
     else
