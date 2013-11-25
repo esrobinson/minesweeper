@@ -2,6 +2,15 @@ class Board
 
   def initialize
     @tile_grid = Array.new(9) { Array.new(9) { Tile.new() } }
+    set_tile_coords
+  end
+
+  def set_tile_coords
+    @tile_grid.each_with_index do |row, r_index|
+      row.each_with_index do |tile, c_index|
+        tile.coords = [r_index, c_index]
+      end
+    end
   end
 
   def make_move(move)
@@ -23,7 +32,7 @@ class Board
     @tile_grid[x][y]
   end
 
-  def reveal_adjacent_tiles(coords)
+  def adjacent_tiles(coords)
     coords_x, coords_y = coords
     neighbor_offsets =
         [[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0]]
@@ -33,8 +42,10 @@ class Board
         next unless (coords_y + offset_y).between?(0,8)
         neighbors << @tile_grid[coords_x + offset_x][coords_y + offset_y]
       end
-
+    end
   end
+
+
 
   def won?
     false
