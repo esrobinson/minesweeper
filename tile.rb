@@ -2,8 +2,8 @@ class Tile
   attr_accessor :neighbor_bombs, :bomb
   attr_reader :coords
 
-  def initialize(coords)
-    @coords = coords
+  def initialize()
+    @coords = nil
     @bomb = false
     @flagged = false
     @revealed = false
@@ -29,13 +29,17 @@ class Tile
   def reveal
     @revealed = true
     return @neighbor_bombs unless bomb?
-    return "Boom!"
+    false
   end
 
   def to_s
-    return "* " unless @flagged || @revealed
-    return "f " if @flagged
-    return "#{@neighbor_bombs} "
+    if flagged?
+      "f "
+    elsif revealed?
+      "#{@neighbor_bombs}"
+    else
+      "* "
+    end
   end
 
 end
