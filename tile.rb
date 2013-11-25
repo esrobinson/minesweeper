@@ -1,11 +1,11 @@
 class Tile
+  attr_accessor :neighbor_bombs, :bomb
 
   def initialize
     @bomb = false
     @flagged = false
     @revealed = false
     @neighbor_bombs = 0
-
   end
 
   def bomb?
