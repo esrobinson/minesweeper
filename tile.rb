@@ -1,7 +1,9 @@
 class Tile
   attr_accessor :neighbor_bombs, :bomb
+  attr_reader :coords
 
-  def initialize
+  def initialize(coords)
+    @coords = coords
     @bomb = false
     @flagged = false
     @revealed = false
