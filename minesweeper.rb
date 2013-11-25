@@ -6,10 +6,10 @@ class Game
 
   def play
     @board = Board.new
-
-    until @board.won? || @board.lost?
+    lost = false
+    until @board.won? || lost
       move = get_move
-      @board.make_move(move)
+      lost = !@board.make_move(move)
     end
 
   end
