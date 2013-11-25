@@ -9,6 +9,7 @@ class Board
     @tile_grid.each_with_index do |row, r_index|
       row.each_with_index do |tile, c_index|
         tile.coords = [r_index, c_index]
+        tile.neighbor_bombs = neighbor_bombs(tile)
       end
     end
   end
@@ -51,7 +52,6 @@ class Board
     end
   end
 
-
   def won?
     false
     true if #(all mines flagged && no of mines == no of flags) || all others              revealed
@@ -59,6 +59,29 @@ class Board
 
   def lost?
     true if #last move was a mine
+  end
+
+  def reveal_contig(coords)
+    reveal_queue = [get_tile(coords)]
+    until reveal_queue.empty?
+      current_tile = reveal_queue.shift
+      reveal_value = current_tile.reveal
+      if reveal_value == 0
+        adj_tiles = adjacent_tiles(current_tile.coords)
+        adj_tiles.each do |tile|
+          reveal_queue << tile unless tile.revealed?
+        end
+      elsif !reveal_value
+        return false
+      end
+    end
+    true
+  end
+
+  def neighbor_bombs(tile)
+    adjacent_tiles(tile.coords).count do |tile|
+      tile.bomb?
+    end
   end
 
 end
