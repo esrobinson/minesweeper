@@ -45,6 +45,11 @@ class Board
     end
   end
 
+  def print
+    @tile_grid.each do |row|
+      puts row.join(" ")
+    end
+  end
 
 
   def won?
