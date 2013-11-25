@@ -16,7 +16,7 @@ class Board
 
   def make_move(move)
     move_type, coords = move
-    move_type == "f" ? flag(coords) : reveal(coords)
+    move_type == "f" ? flag(coords) : reveal_contig(coords)
   end
 
   def set_bombs(no_of_bombs = 9)
@@ -53,12 +53,9 @@ class Board
   end
 
   def won?
-    false
-    true if #(all mines flagged && no of mines == no of flags) || all others              revealed
-  end
-
-  def lost?
-    true if #last move was a mine
+    @tile_grid.all? do |row|
+      row.all? { |tile| tile.revealed? || tile.bomb? }
+    end
   end
 
   def reveal_contig(coords)
@@ -76,6 +73,10 @@ class Board
       end
     end
     true
+  end
+
+  def flag_coords(coords)
+    get_tile(coords).flag
   end
 
   def neighbor_bombs(tile)
