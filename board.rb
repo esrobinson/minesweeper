@@ -37,20 +37,6 @@ class Board
     @tile_grid[x][y]
   end
 
-  def adjacent_tiles(coords)
-    coords_x, coords_y = coords
-    neighbor_offsets =
-        [[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0]]
-    # [-1, 0, 1].product([-1, 0, 1])
-    [].tap do |neighbors|
-      neighbor_offsets.each do |offset_x, offset_y|
-        next unless (coords_x + offset_x).between?(0,8)
-        next unless (coords_y + offset_y).between?(0,8)
-        neighbors << @tile_grid[coords_x + offset_x][coords_y + offset_y]
-      end
-    end
-  end
-
   def print
     @tile_grid.each do |row|
       puts row.join(" ")
@@ -74,7 +60,7 @@ class Board
       current_tile.reveal
       return false if current_tile.bomb?
       if current_tile.neighbor_bombs == 0
-        adjacent_tiles(current_tile.coords).each do |tile|
+        current_tile.adjacent_tiles.each do |tile|
           reveal_queue << tile unless tile.revealed?
         end
       end
@@ -87,7 +73,7 @@ class Board
   end
 
   def neighbor_bombs(tile)
-    adjacent_tiles(tile.coords).count do |tile|
+    tile.adjacent_tiles.count do |tile|
       tile.bomb?
     end
   end

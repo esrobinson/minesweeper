@@ -21,6 +21,34 @@ class Tile
     @revealed
   end
 
+
+  NEIGHBOR_OFFSETS =
+    [[-1,  1],
+    [  0,  1],
+    [  1,  1],
+    [  1,  0],
+    [  1, -1],
+    [  0, -1],
+    [ -1, -1],
+    [ -1,  0]]
+
+  def adjacent_tiles
+    coords_x, coords_y = coords    
+    [].tap do |neighbors|
+      NEIGHBOR_OFFSETS.each do |offset_x, offset_y|
+        next unless valid_square?(offset_x, offset_y)
+        neighbors << @board.tile_grid[coords_x + offset_x][coords_y + offset_y]
+      end
+    end
+  end
+
+  def valid_square? (offset_x, offset_y)
+    coords_x, coords_y = coords
+    adjusted = [coords_x + offset_x, coords_y + offset_y]
+    adjusted.max < 9 and adjusted.min > -1
+  end
+
+
   def flag
     @flagged = !@flagged unless revealed?
     true
