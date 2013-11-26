@@ -28,8 +28,6 @@ class LeaderBoard
       LeaderBoard.new
     end
   end
-
-
 end
 
 class Leader

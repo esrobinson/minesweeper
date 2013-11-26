@@ -8,3 +8,6 @@ leaders:
 - !ruby/object:Leader
   name: dsfgvbn
   time: 196.0
+- !ruby/object:Leader
+  name: Flarnie
+  time: 208.9
