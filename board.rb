@@ -20,7 +20,7 @@ class Board
   def make_move(move)
     move_type, coords = move
     coords.reverse!
-    move_type == "f" ? flag_coords(coords) : reveal_contig(coords)
+    move_type == "f" ? flag(coords) : reveal_contig(coords)
   end
 
   def set_bombs(no_of_bombs = 9)
@@ -32,7 +32,7 @@ class Board
     end
   end
 
-  def get_tile(coords)
+  def [](coords)
     x,y = coords
     @tile_grid[x][y]
   end
@@ -54,7 +54,7 @@ class Board
   end
 
   def reveal_contig(coords)
-    reveal_queue = [get_tile(coords)]
+    reveal_queue = [self[coords]]
     until reveal_queue.empty?
       current_tile = reveal_queue.shift
       current_tile.reveal
@@ -68,8 +68,8 @@ class Board
     true
   end
 
-  def flag_coords(coords)
-    get_tile(coords).flag
+  def flag(coords)
+    self[coords].flag
   end
 
   def neighbor_bombs(tile)
