@@ -2,15 +2,16 @@ class Board
   attr_reader :tile_grid
 
   def initialize
-    @tile_grid = Array.new(9) { Array.new(9) { Tile.new() } }
+    @tile_grid = Array.new(9) do |row|
+      Array.new(9) { |col| Tile.new(self, [row, col]) }
+    end
     set_bombs
-    set_tile_coords
+    set_neighbor_bombs
   end
 
-  def set_tile_coords
+  def set_neighbor_bombs
     @tile_grid.each_with_index do |row, r_index|
       row.each_with_index do |tile, c_index|
-        tile.coords = [r_index, c_index]
         tile.neighbor_bombs = neighbor_bombs(tile)
       end
     end

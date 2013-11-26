@@ -1,12 +1,12 @@
 class Tile
   attr_accessor :neighbor_bombs, :bomb, :coords
 
-  def initialize
-    @coords = nil
+  def initialize(board, coords)
+    @coords = coords
     @bomb = false
     @flagged = false
     @revealed = false
-    @neighbor_bombs = 0
+    @board = board
   end
 
   def bomb?
