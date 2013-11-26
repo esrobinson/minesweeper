@@ -60,9 +60,13 @@ class Tile
 
   def reveal
     @revealed = true
-    bomb?
-    # return @neighbor_bombs unless bomb?
-    # false
+    return false if bomb?
+    if bombed_neighbors == 0
+      adjacent_tiles.each do |tile|
+        tile.reveal unless tile.revealed?
+      end
+    end
+    true
   end
 
   def to_s

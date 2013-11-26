@@ -11,7 +11,7 @@ class Board
   def make_move(move)
     move_type, coords = move
     coords.reverse!
-    move_type == "f" ? flag(coords) : reveal_contig(coords)
+    move_type == "f" ? self[coords].flag : self[coords].reveal
   end
 
   def set_bombs(no_of_bombs = 9)
@@ -42,25 +42,6 @@ class Board
     @tile_grid.all? do |row|
       row.all? { |tile| tile.revealed? || tile.bomb? }
     end
-  end
-
-  def reveal_contig(coords)
-    reveal_queue = [self[coords]]
-    until reveal_queue.empty?
-      current_tile = reveal_queue.shift
-      current_tile.reveal
-      return false if current_tile.bomb?
-      if current_tile.bombed_neighbors == 0
-        current_tile.adjacent_tiles.each do |tile|
-          reveal_queue << tile unless tile.revealed?
-        end
-      end
-    end
-    true
-  end
-
-  def flag(coords)
-    self[coords].flag
   end
 
 end
