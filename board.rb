@@ -42,7 +42,7 @@ class Board
         [[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0]]
     # [-1, 0, 1].product([-1, 0, 1])
     [].tap do |neighbors|
-      neighbor_offsets.each do |offset_x,offset_y|
+      neighbor_offsets.each do |offset_x, offset_y|
         next unless (coords_x + offset_x).between?(0,8)
         next unless (coords_y + offset_y).between?(0,8)
         neighbors << @tile_grid[coords_x + offset_x][coords_y + offset_y]

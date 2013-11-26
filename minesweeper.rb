@@ -1,5 +1,6 @@
 require_relative 'board'
 require_relative 'tile'
+require_relative 'leaderboard'
 require 'yaml'
 
 class Game
@@ -7,6 +8,7 @@ class Game
 
   def initialize
     @board = nil
+    @leader_board = LeaderBoard.load
   end
 
   def play
@@ -16,9 +18,25 @@ class Game
       move = get_move
       lost = !@board.make_move(move)
     end
+    end_of_game
+    start
+
+  end
+
+  def end_of_game
     puts @board
-    puts "You win in #{(Time.now - @start_time).round(1)} seconds" if @board.won?
-    puts "You lose in #{(Time.now - @start_time).round(1)} seconds" if lost
+    time = (Time.now - @start_time).round(1)
+    if @board.won?
+      puts "You won in #{time} seconds"
+      puts "Please enter your name for the leader board: "
+      name = gets.chomp
+      leader = Leader.new(name, time)
+      @leader_board.add_leader(leader)
+      @leader_board.save
+    else
+      puts "You lose in #{time} seconds"
+    end
+    @leader_board.print_best
   end
 
   def start
@@ -64,4 +82,8 @@ class Game
       f.puts ({board: @board, elapsed_time: elapsed_time}.to_yaml)
     end
   end
+end
+
+if __FILE__ == $PROGRAM_NAME
+  Game.new.start
 end
