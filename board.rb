@@ -28,12 +28,6 @@ class Board
     @tile_grid[x][y]
   end
 
-  def print
-    @tile_grid.each do |row|
-      puts row.join(" ")
-    end
-  end
-
   def to_s
     @tile_grid.map { |row| row.join(" ") }.join("\n")
   end
