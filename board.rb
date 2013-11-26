@@ -1,5 +1,4 @@
 class Board
-
   attr_reader :tile_grid
 
   def initialize
@@ -41,6 +40,7 @@ class Board
     coords_x, coords_y = coords
     neighbor_offsets =
         [[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0]]
+    # [-1, 0, 1].product([-1, 0, 1])
     [].tap do |neighbors|
       neighbor_offsets.each do |offset_x,offset_y|
         next unless (coords_x + offset_x).between?(0,8)
@@ -56,6 +56,10 @@ class Board
     end
   end
 
+  def to_s
+    @tile_grid.map { |row| row.join(" ") }.join("\n")
+  end
+
   def won?
     @tile_grid.all? do |row|
       row.all? { |tile| tile.revealed? || tile.bomb? }
@@ -66,14 +70,12 @@ class Board
     reveal_queue = [get_tile(coords)]
     until reveal_queue.empty?
       current_tile = reveal_queue.shift
-      reveal_value = current_tile.reveal
-      if reveal_value == 0
-        adj_tiles = adjacent_tiles(current_tile.coords)
-        adj_tiles.each do |tile|
+      current_tile.reveal
+      return false if current_tile.bomb?
+      if current_tile.neighbor_bombs == 0
+        adjacent_tiles(current_tile.coords).each do |tile|
           reveal_queue << tile unless tile.revealed?
         end
-      elsif !reveal_value
-        return false
       end
     end
     true
@@ -88,5 +90,4 @@ class Board
       tile.bomb?
     end
   end
-
 end
