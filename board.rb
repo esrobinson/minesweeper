@@ -6,15 +6,6 @@ class Board
       Array.new(9) { |col| Tile.new(self, [row, col]) }
     end
     set_bombs
-    set_neighbor_bombs
-  end
-
-  def set_neighbor_bombs
-    @tile_grid.each_with_index do |row, r_index|
-      row.each_with_index do |tile, c_index|
-        tile.neighbor_bombs = neighbor_bombs(tile)
-      end
-    end
   end
 
   def make_move(move)
@@ -59,7 +50,7 @@ class Board
       current_tile = reveal_queue.shift
       current_tile.reveal
       return false if current_tile.bomb?
-      if current_tile.neighbor_bombs == 0
+      if current_tile.bombed_neighbors == 0
         current_tile.adjacent_tiles.each do |tile|
           reveal_queue << tile unless tile.revealed?
         end
@@ -72,9 +63,4 @@ class Board
     self[coords].flag
   end
 
-  def neighbor_bombs(tile)
-    tile.adjacent_tiles.count do |tile|
-      tile.bomb?
-    end
-  end
 end

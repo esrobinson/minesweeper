@@ -1,5 +1,5 @@
 class Tile
-  attr_accessor :neighbor_bombs, :bomb, :coords
+  attr_accessor :bomb, :coords
 
   def initialize(board, coords)
     @coords = coords
@@ -42,6 +42,10 @@ class Tile
     end
   end
 
+  def bombed_neighbors
+    adjacent_tiles.count { |tile| tile.bomb? }
+  end
+
   def valid_square? (offset_x, offset_y)
     coords_x, coords_y = coords
     adjusted = [coords_x + offset_x, coords_y + offset_y]
@@ -65,7 +69,7 @@ class Tile
     if flagged?
       "F"
     elsif revealed?
-      "#{@neighbor_bombs}"
+      "#{bombed_neighbors}"
     else
       "*"
     end
